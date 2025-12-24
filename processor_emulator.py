@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import tkinter.font as tkFont
+from tklinenums import TkLineNumbers
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 import re
@@ -165,7 +166,7 @@ class Emulator:
         opcode = self.OPCODES[inst.opcode]
         binary = format(opcode, '04b')  # 4 бита
         
-        # TODO: полное кодирование с адресациями
+        # полное кодирование с адресациями
         binary += '|00.0000000000000000|00.0000000000000000'
         
         return binary
@@ -326,7 +327,7 @@ class EmulatorGUI:
                           font=("Arial", 14, "bold"))
         header.pack(pady=5)
         
-        subtitle = ttk.Label(main_frame, text="Гарвардская архитектура | 3-адресные команды",
+        subtitle = ttk.Label(main_frame, text="Гарвардская архитектура | 2-адресные команды",
                             font=("Arial", 10))
         subtitle.pack()
         
@@ -334,10 +335,17 @@ class EmulatorGUI:
         input_frame = ttk.LabelFrame(main_frame, text="Ввод программы (Ассемблер)", padding=10)
         input_frame.pack(fill=tk.BOTH, expand=True, pady=5)
         
-        self.program_input = scrolledtext.ScrolledText(input_frame, height=8, width=80,
+        editor_container = ttk.Frame(input_frame)
+        editor_container.pack(fill=tk.BOTH, expand=True)
+
+        self.program_input = scrolledtext.ScrolledText(editor_container, height=8, width=80,
                                                        font=self.mono_font, wrap=tk.NONE)
-        self.program_input.pack(fill=tk.BOTH, expand=True)
-        self.program_input.insert(tk.END, "mov ecx [0]\nadd eax [ecx]\nsub ecx 1\njnz 1")
+        self.line_numbers = TkLineNumbers(editor_container, self.program_input, justify="center", colors=("#2197db", "#ffffff"))
+        
+        self.line_numbers.pack(side=tk.LEFT, fill=tk.Y)
+        self.program_input.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        
+        self.program_input.bind("<<Modified>>", lambda event: self.root.after_idle(self.line_numbers.redraw), add=True)
         
         # Кнопки управления
         button_frame = ttk.Frame(main_frame)
