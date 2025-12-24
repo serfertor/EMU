@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Эмулятор процессора с Tkinter GUI
-Гарвардская архитектура, 3-адресные команды
-Система команд: MOV, ADD, SUB, MUL, DIV, AND, OR, XOR, NOT, INC, CMP, JMP, JZ, JNZ, JS, JNS
-"""
-
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import tkinter.font as tkFont
@@ -64,11 +56,11 @@ class Emulator:
     def reset(self):
         """Сброс состояния эмулятора"""
         self.registers = {'eax': 0, 'ebx': 0, 'ecx': 0, 'edx': 0}
-        self.flags = {'z': 0, 's': 0}  # Zero, Sign
-        self.pc = 0  # Program Counter
-        self.ir = None  # Instruction Register
-        self.memory = {}  # Data Memory (ОЗУ)
-        self.program = []  # Программа
+        self.flags = {'z': 0, 's': 0}  
+        self.pc = 0  
+        self.ir = None  
+        self.memory = {}  
+        self.program = [] 
         self.executed_count = 0
         self.running = False
         self.error_msg = None
@@ -330,7 +322,7 @@ class EmulatorGUI:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
         # Заголовок
-        header = ttk.Label(main_frame, text="🖥️  Эмулятор Процессора", 
+        header = ttk.Label(main_frame, text="Эмулятор Процессора", 
                           font=("Arial", 14, "bold"))
         header.pack(pady=5)
         
@@ -351,20 +343,20 @@ class EmulatorGUI:
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill=tk.X, pady=5)
         
-        ttk.Button(button_frame, text="📥 Загрузить", 
+        ttk.Button(button_frame, text="Загрузить", 
                   command=self.load_program).pack(side=tk.LEFT, padx=2)
-        ttk.Button(button_frame, text="▶️  Шаг", 
+        ttk.Button(button_frame, text=" Шаг", 
                   command=self.run_step).pack(side=tk.LEFT, padx=2)
-        ttk.Button(button_frame, text="⏯️  Запуск", 
+        ttk.Button(button_frame, text="Запуск", 
                   command=self.run_auto).pack(side=tk.LEFT, padx=2)
-        ttk.Button(button_frame, text="🔄 Сброс", 
+        ttk.Button(button_frame, text="Сброс", 
                   command=self.reset).pack(side=tk.LEFT, padx=2)
         
         ttk.Separator(button_frame, orient=tk.VERTICAL).pack(side=tk.LEFT, padx=10, fill=tk.Y)
         
-        ttk.Button(button_frame, text="📊 Задача 1: Сумма", 
+        ttk.Button(button_frame, text="Задача 1: Сумма", 
                   command=self.load_task1).pack(side=tk.LEFT, padx=2)
-        ttk.Button(button_frame, text="🔀 Задача 2: Свертка", 
+        ttk.Button(button_frame, text="Задача 2: Свертка", 
                   command=self.load_task2).pack(side=tk.LEFT, padx=2)
         
         # Основная сетка отображения
@@ -548,10 +540,10 @@ class EmulatorGUI:
         self.console.config(state=tk.DISABLED)
         
         if self.emulator.parse_program(code):
-            self.log_console(f"✓ Программа загружена ({len(self.emulator.program)} команд)", 'success')
+            self.log_console(f" Программа загружена ({len(self.emulator.program)} команд)", 'success')
             self.update_display()
         else:
-            self.log_console(f"✗ Ошибка: {self.emulator.error_msg}", 'error')
+            self.log_console(f"Ошибка: {self.emulator.error_msg}", 'error')
     
     def run_step(self):
         """Выполнить один шаг"""
@@ -565,9 +557,9 @@ class EmulatorGUI:
             self.update_display()
         else:
             if self.emulator.error_msg:
-                self.log_console(f"✗ {self.emulator.error_msg}", 'error')
+                self.log_console(f"{self.emulator.error_msg}", 'error')
             else:
-                self.log_console("✓ Программа завершена", 'success')
+                self.log_console(" Программа завершена", 'success')
             self.update_display()
     
     def run_auto(self):
@@ -577,9 +569,9 @@ class EmulatorGUI:
             return
         
         if self.emulator.run_auto():
-            self.log_console(f"✓ Выполнено {self.emulator.executed_count} команд", 'success')
+            self.log_console(f" Выполнено {self.emulator.executed_count} команд", 'success')
         else:
-            self.log_console(f"✗ {self.emulator.error_msg}", 'error')
+            self.log_console(f"{self.emulator.error_msg}", 'error')
         
         self.update_display()
     
@@ -619,7 +611,7 @@ jnz 8"""
         self.console.config(state=tk.NORMAL)
         self.console.delete(1.0, tk.END)
         self.console.config(state=tk.DISABLED)
-        self.log_console("✓ Задача 1 загружена: Сумма элементов массива", 'success')
+        self.log_console(" Задача 1 загружена: Сумма элементов массива", 'success')
         self.update_display()
     
     def load_task2(self):
@@ -669,7 +661,7 @@ jnz 22"""
         self.console.config(state=tk.NORMAL)
         self.console.delete(1.0, tk.END)
         self.console.config(state=tk.DISABLED)
-        self.log_console("✓ Задача 2 загружена: Свертка двух массивов", 'success')
+        self.log_console(" Задача 2 загружена: Свертка двух массивов", 'success')
         self.update_display()
 
 
